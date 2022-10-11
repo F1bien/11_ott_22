@@ -10,7 +10,7 @@ struct concerto
 	char genere[100];
 };
 
-struct data 
+struct data
 {
 	int cod_data;
 	int cod_concerto;
@@ -59,6 +59,115 @@ void load_data_luoghi( struct luogo luoghi[], FILE *fp ) {
 	}
 	printf("dati luoghi caricati\n");
 }
+
+
+// eserciziono 1
+/*
+	Stampare il concerto che ha realizzato l'incasso maggiore in prevendite
+*/
+float incassi ( struct data date[], int cod ) {
+
+	int i;
+	float output = 0;
+
+	for ( i = 0 ; i < 100 ; i += 1 ) {
+		if ( cod == date[i].cod_concerto ) {
+			output += date[i].prevendite * date[i].prezzo;
+		}
+	}
+	return output;
+}
+
+float eserciziono_1 ( struct concerto concerti[], struct data date[] ) {
+
+	float temp = 0, max = 0;
+	int i, max_i;
+
+	for ( i = 0, max_i = 0 ; i < 100 ; i += 1 ) {
+		temp = incassi(date, concerti[i].cod_concerto);
+		if ( temp >= max ) {
+			max = temp;
+			max_i = i;
+		}
+
+	}
+
+	return max_i;
+}
+
+
+// eserciziono 2
+/*
+	Per ogni concerto stampare il nome dell'artista, e la lista dei luoghi in cui si sarà
+	eseguito,indicandone la quantità
+*/
+int lista_luoghi ( struct data date[], struct luogo luoghi[], int cod ) {
+
+	int count = 0, i, j;
+
+	for ( i = 0 ; i < 100 ; i += 1 ) {
+		if ( date[i].cod_concerto == cod ) {
+			for ( j = 0 ; j < 100 ; j += 1 ) {
+				if ( date[i].cod_luogo == luoghi[j].cod_luogo ) {
+					printf("\n\t%s", luoghi[j].citta);
+				}
+			}
+
+			printf("\t %s", date[i].data);
+			count += 1;
+		}
+	}
+
+	return count;
+}
+
+void esercizio_2 ( struct concerto concerti[], struct data date[], struct luogo luoghi[] ) {
+
+	int count, i;
+
+	for ( i = 0 ; i < 100 ; i += 1 ) {
+		printf("\n\tartista : %s", concerti[i].nome_artista);
+
+		count = lista_luoghi(date, luoghi, concerti[i].cod_concerto);
+
+		printf("\n\tper un totale di : %d", count);
+
+	}
+
+
+}
+
+
+// eserciziono 3
+/*
+	Preso in input il nome di un artista X,stampare il calendario dei suoi concerti indicando
+	la data e il luogo di esecuzione
+*/
+int ricerca_nome ( struct concerto concerti[], char input[] ) {
+
+	int i;
+
+	for ( i = 0 ; i < 100 ; i += 1 ) {
+		if ( strcmp(concerti[i].nome_artista, input) == 0 ) {
+			return i;
+		}
+	}
+
+}
+
+void esercizio_3 ( struct concerto concerti[], struct data date[], struct luogo luoghi[], char input[] ) {
+
+	int i, cod;
+
+	cod = ricerca_nome(concerti, input);
+
+	printf("\n\tartista : %s", concerti[cod].nome_artista);
+
+	lista_luoghi(date, luoghi, cod);
+
+}
+
+
 
 
 
@@ -123,6 +232,7 @@ int main () {
 	}
 	
 	if ( exit == 0 ) {
+
 		struct concerto concerti[100];
 		struct data date[100];
 		struct luogo luoghi[100];
@@ -137,7 +247,20 @@ int main () {
 		
 		// esercizi
 		
+		int max_i;
+
+		max_i = eserciziono_1(concerti, date);
+		printf("\n\tl' artista che ha incassoto di piu e' %s\n", concerti[max_i].nome_artista);
+
+		esercizio_2(concerti, date, luoghi);
+
+		printf("\n\tINserire nome artista");
 		
+		char input[100];
+		scanf("%s", input);
+
+		esercizio_3(concerti, date, luoghi, input);
+
 		
 		
 	}
