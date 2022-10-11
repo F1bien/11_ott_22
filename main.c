@@ -167,10 +167,7 @@ void esercizio_3 ( struct concerto concerti[], struct data date[], struct luogo 
 
 }
 
-
-
-
-
+// main
 int main () {
 	
 	int exit = 0;
@@ -261,14 +258,7 @@ int main () {
 
 		esercizio_3(concerti, date, luoghi, input);
 
-		
-		
 	}
-	
-	
-	
-	
-
 	
 	return 0;
 }
