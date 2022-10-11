@@ -27,6 +27,11 @@ struct luogo
 	int n_posti;
 };
 
+
+int LUNG_FILE_CONCERTI;
+int LUNG_FILE_DATE;
+int LUNG_FILE_LUOGHI;
+
 void load_data_concerti( struct concerto concerti[], FILE *fp ) {
 	
 	int i = 0;
@@ -36,6 +41,7 @@ void load_data_concerti( struct concerto concerti[], FILE *fp ) {
 		
 	}
 	printf("dati concerti caricati\n");
+	LUNG_FILE_CONCERTI = i;
 }
 
 void load_data_date( struct data date[], FILE *fp ) {
@@ -47,6 +53,7 @@ void load_data_date( struct data date[], FILE *fp ) {
 		
 	}
 	printf("dati date caricati\n");
+	LUNG_FILE_DATE = i;
 }
 
 void load_data_luoghi( struct luogo luoghi[], FILE *fp ) {
@@ -58,6 +65,7 @@ void load_data_luoghi( struct luogo luoghi[], FILE *fp ) {
 		
 	}
 	printf("dati luoghi caricati\n");
+	LUNG_FILE_LUOGHI = i;
 }
 
 
@@ -70,7 +78,7 @@ float incassi ( struct data date[], int cod ) {
 	int i;
 	float output = 0;
 
-	for ( i = 0 ; i < 100 ; i += 1 ) {
+	for ( i = 0 ; i < LUNG_FILE_DATE ; i += 1 ) {
 		if ( cod == date[i].cod_concerto ) {
 			output += date[i].prevendite * date[i].prezzo;
 		}
@@ -83,7 +91,7 @@ float eserciziono_1 ( struct concerto concerti[], struct data date[] ) {
 	float temp = 0, max = 0;
 	int i, max_i;
 
-	for ( i = 0, max_i = 0 ; i < 100 ; i += 1 ) {
+	for ( i = 0, max_i = 0 ; i < LUNG_FILE_CONCERTI ; i += 1 ) {
 		temp = incassi(date, concerti[i].cod_concerto);
 		if ( temp >= max ) {
 			max = temp;
@@ -105,9 +113,9 @@ int lista_luoghi ( struct data date[], struct luogo luoghi[], int cod ) {
 
 	int count = 0, i, j;
 
-	for ( i = 0 ; i < 100 ; i += 1 ) {
+	for ( i = 0 ; i < LUNG_FILE_DATE ; i += 1 ) {
 		if ( date[i].cod_concerto == cod ) {
-			for ( j = 0 ; j < 100 ; j += 1 ) {
+			for ( j = 0 ; j < LUNG_FILE_LUOGHI ; j += 1 ) {
 				if ( date[i].cod_luogo == luoghi[j].cod_luogo ) {
 					printf("\n\t%s", luoghi[j].citta);
 				}
@@ -125,7 +133,7 @@ void esercizio_2 ( struct concerto concerti[], struct data date[], struct luogo 
 
 	int count, i;
 
-	for ( i = 0 ; i < 100 ; i += 1 ) {
+	for ( i = 0 ; i < LUNG_FILE_CONCERTI ; i += 1 ) {
 		printf("\n\tartista : %s", concerti[i].nome_artista);
 
 		count = lista_luoghi(date, luoghi, concerti[i].cod_concerto);
@@ -147,7 +155,7 @@ int ricerca_nome ( struct concerto concerti[], char input[] ) {
 
 	int i;
 
-	for ( i = 0 ; i < 100 ; i += 1 ) {
+	for ( i = 0 ; i < LUNG_FILE_CONCERTI ; i += 1 ) {
 		if ( strcmp(concerti[i].nome_artista, input) == 0 ) {
 			return i;
 		}
@@ -251,7 +259,7 @@ int main () {
 
 		esercizio_2(concerti, date, luoghi);
 
-		printf("\n\tINserire nome artista");
+		printf("\n\tinserire nome artista : ");
 		
 		char input[100];
 		scanf("%s", input);
